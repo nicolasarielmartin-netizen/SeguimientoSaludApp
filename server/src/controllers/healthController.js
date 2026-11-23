@@ -1,6 +1,15 @@
-
+import mongoose from 'mongoose'
+import { z } from 'zod'
 import HealthIndicator from '../models/HealthIndicator.js'
 import HealthRecord from '../models/HealthRecord.js'
+
+// Validación de indicadores
+const indicatorSchema = z.object({
+  name: z.string().trim().min(1, 'El nombre es obligatorio').max(60),
+  category: z.string().trim().max(40).optional(),
+  unit: z.string().trim().min(1, 'La unidad es obligatoria').max(20),
+  description: z.string().trim().max(250).optional()
+})
 
 // GET: Obtener indicadores del usuario
 export const getIndicators = async (req, res) => {
@@ -44,6 +53,10 @@ export const createIndicator = async (req, res) => {
 
 // PUT: Actualizar indicador
 export const updateIndicator = async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).json({ message: 'Identificador no válido' })
+  }
+
   try {
     const { name, category, unit, description, isActive } = req.body
 
@@ -68,14 +81,19 @@ export const updateIndicator = async (req, res) => {
 
     res.json(indicator)
   } catch (error) {
+    console.error('updateIndicator:', error)
     res.status(400).json({
       message: 'No se pudo actualizar el indicador'
     })
   }
 }
 
-// DELETE: Eliminar indicador
+// DELETE: Eliminar indicador y sus mediciones
 export const deleteIndicator = async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).json({ message: 'Identificador no válido' })
+  }
+
   try {
     const indicator = await HealthIndicator.findOne({
       _id: req.params.id,
@@ -99,6 +117,7 @@ export const deleteIndicator = async (req, res) => {
       message: 'Indicador y sus mediciones eliminados correctamente'
     })
   } catch (error) {
+    console.error('deleteIndicator:', error)
     res.status(500).json({
       message: 'Error al eliminar el indicador'
     })
@@ -107,6 +126,10 @@ export const deleteIndicator = async (req, res) => {
 
 // GET: Obtener mediciones de un indicador
 export const getHealthRecords = async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).json({ message: 'Identificador no válido' })
+  }
+
   try {
     const indicator = await HealthIndicator.findOne({
       _id: req.params.id,
@@ -126,6 +149,7 @@ export const getHealthRecords = async (req, res) => {
 
     res.json(records)
   } catch (error) {
+    console.error('getHealthRecords:', error)
     res.status(500).json({
       message: 'Error al obtener mediciones'
     })
@@ -134,6 +158,10 @@ export const getHealthRecords = async (req, res) => {
 
 // POST: Registrar medición
 export const createHealthRecord = async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).json({ message: 'Identificador no válido' })
+  }
+
   try {
     const { value, secondaryValue, measuredAt, notes } = req.body
 
@@ -166,6 +194,7 @@ export const createHealthRecord = async (req, res) => {
 
     res.status(201).json(record)
   } catch (error) {
+    console.error('createHealthRecord:', error)
     res.status(400).json({
       message: 'No se pudo registrar la medición'
     })
@@ -174,6 +203,13 @@ export const createHealthRecord = async (req, res) => {
 
 // DELETE: Eliminar medición
 export const deleteHealthRecord = async (req, res) => {
+  if (
+    !mongoose.isValidObjectId(req.params.id) ||
+    !mongoose.isValidObjectId(req.params.recordId)
+  ) {
+    return res.status(400).json({ message: 'Identificador no válido' })
+  }
+
   try {
     const record = await HealthRecord.findOneAndDelete({
       _id: req.params.recordId,
@@ -191,8 +227,9 @@ export const deleteHealthRecord = async (req, res) => {
       message: 'Medición eliminada correctamente'
     })
   } catch (error) {
+    console.error('deleteHealthRecord:', error)
     res.status(500).json({
-      message: 'Error al eliminar medición'
+      message: 'Error al eliminar la medición'
     })
   }
 }

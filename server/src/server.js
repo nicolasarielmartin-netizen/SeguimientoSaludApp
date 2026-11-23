@@ -1,4 +1,3 @@
-
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
@@ -9,7 +8,6 @@ import connectDB from './config/db.js'
 import authRoutes from './routes/authRoutes.js'
 import healthRoutes from './routes/healthRoutes.js'
 import symptomRoutes from './routes/symptomRoutes.js'
-
 
 dotenv.config()
 
@@ -35,9 +33,34 @@ app.get('/api/health', (req, res) => {
 })
 
 app.use('/api/auth', authRoutes)
-
 app.use('/api/health', healthRoutes)
 app.use('/api/symptoms', symptomRoutes)
+
+// 404: ruta no encontrada (debe ir después de todas las rutas)
+app.use((req, res) => {
+  res.status(404).json({
+    message: 'Ruta no encontrada'
+  })
+})
+
+// Manejador de errores (debe tener los 4 parámetros, incluido next)
+app.use((err, req, res, next) => {
+  // JSON mal formado en el body
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({
+      message: 'El cuerpo de la petición no es JSON válido'
+    })
+  }
+
+  // Cualquier otro error: registra solo lo necesario, sin datos de salud
+  console.error('Error no controlado:', err.message)
+
+  return res.status(err.status || 500).json({
+    message: err.status && err.status < 500
+      ? err.message
+      : 'Error interno del servidor'
+  })
+})
 
 // Iniciar servidor
 const PORT = process.env.PORT || 5000
