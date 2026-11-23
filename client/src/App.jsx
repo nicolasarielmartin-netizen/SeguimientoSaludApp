@@ -1,4 +1,3 @@
-
 import {
   BrowserRouter,
   Routes,
@@ -8,12 +7,13 @@ import {
 
 import { AuthProvider } from './context/AuthContext'
 
-import ProtectedRoute from "./components/common/ProtectedRoute";
+import ProtectedRoute from './components/common/ProtectedRoute';
 import MainLayout from './components/layout/MainLayout'
 
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
+import Registros from './pages/Registros'
 
 function App() {
   return (
@@ -30,6 +30,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/registros" element={<Registros />} />
             </Route>
           </Route>
 

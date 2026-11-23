@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { NavLink } from 'react-router-dom'
 
 const Header = () => {
   const { user, logout } = useAuth()
@@ -57,6 +58,8 @@ const Header = () => {
 
       {/* ACTIONS */}
       <div className="flex items-center gap-3">
+
+        <NavLink to="/registros">Registros</NavLink>
 
         <button
           type="button"

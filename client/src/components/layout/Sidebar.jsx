@@ -1,8 +1,7 @@
-
 import { NavLink } from 'react-router-dom'
 import {
   LayoutDashboard,
-  Activity,
+  ClipboardList,
   Heart,
   Bell,
   FileText,
@@ -28,10 +27,10 @@ const Sidebar = () => {
       title: 'SEGUIMIENTO',
       items: [
         {
-          name: 'Indicadores',
-          path: '/indicadores',
-          icon: Activity,
-          enabled: false
+          name: 'Registros',
+          path: '/registros',
+          icon: ClipboardList,
+          enabled: true
         },
         {
           name: 'Hábitos',
@@ -79,7 +78,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* NAVIGATION */}
+      {/* NAVEGACIÓN */}
       <nav className="flex-1 space-y-7 overflow-y-auto px-4 py-7">
 
         {menuItems.map((section) => (
@@ -122,7 +121,7 @@ const Sidebar = () => {
                     key={item.path}
                     title="Próximamente"
                     aria-disabled="true"
-                    className="flex cursor-not-allowed items-center justify-between rounded-xl px-3 py-3 text-sm text-gray-400 opacity-60"
+                    className="flex cursor-not-allowed items-center justify-between rounded-xl px-3 py-3 text-sm font-medium text-gray-400 opacity-60"
                   >
                     <div className="flex items-center gap-3">
                       <Icon size={19} />
@@ -130,7 +129,7 @@ const Sidebar = () => {
                     </div>
 
                     <span className="text-[9px] font-semibold uppercase tracking-wider">
-                      Próximo
+                      Próximamente
                     </span>
                   </div>
                 )
@@ -145,9 +144,7 @@ const Sidebar = () => {
       <div className="border-t border-[#E9E9E0] p-4">
         <div className="flex items-center gap-3 rounded-xl px-3 py-3 text-gray-500 transition hover:bg-[#F7F7F1]">
           <Settings size={19} />
-          <span className="text-sm font-medium">
-            Configuración
-          </span>
+          <span className="text-sm font-medium">Configuración</span>
         </div>
 
         <div className="mt-3 rounded-xl bg-[#F5F0E6] p-4">
@@ -169,4 +166,3 @@ const Sidebar = () => {
 }
 
 export default Sidebar
-
