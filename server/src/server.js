@@ -1,0 +1,53 @@
+
+import express from 'express'
+import dotenv from 'dotenv'
+import cors from 'cors'
+import helmet from 'helmet'
+import cookieParser from 'cookie-parser'
+
+import connectDB from './config/db.js'
+import authRoutes from './routes/authRoutes.js'
+import healthRoutes from './routes/healthRoutes.js'
+import symptomRoutes from './routes/symptomRoutes.js'
+
+
+dotenv.config()
+
+const app = express()
+
+// Middlewares generales
+app.use(helmet())
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}))
+
+app.use(express.json())
+app.use(cookieParser())
+
+// Rutas
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    message: 'ChronicCare API funcionando'
+  })
+})
+
+app.use('/api/auth', authRoutes)
+
+app.use('/api/health', healthRoutes)
+app.use('/api/symptoms', symptomRoutes)
+
+// Iniciar servidor
+const PORT = process.env.PORT || 5000
+
+const startServer = async () => {
+  await connectDB()
+
+  app.listen(PORT, () => {
+    console.log(`Servidor ejecutándose en puerto ${PORT}`)
+  })
+}
+
+startServer()
