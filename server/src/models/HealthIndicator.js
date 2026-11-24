@@ -25,6 +25,20 @@ const healthIndicatorSchema = new mongoose.Schema(
     },
 
     unit: {
+        trackingType: {
+    type: String,
+    enum: ['check', 'measure'],
+    default: 'measure'
+  },
+  unit: {
+    type: String,
+    trim: true,
+    maxlength: 20,
+    required: function () {
+      return this.trackingType === 'measure'
+    }
+  },
+
       type: String,
       required: [true, 'La unidad de medida es obligatoria'],
       trim: true,

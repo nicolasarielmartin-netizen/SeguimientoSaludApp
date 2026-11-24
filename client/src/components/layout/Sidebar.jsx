@@ -22,8 +22,6 @@ const menuItems = [
     title: 'SEGUIMIENTO',
     items: [
       { name: 'Registros', path: '/registros', icon: ClipboardList, enabled: true },
-      { name: 'Hábitos', path: '/habitos', icon: Heart, enabled: false },
-      { name: 'Notificaciones', path: '/notificaciones', icon: Bell, enabled: false }
     ]
   },
   {

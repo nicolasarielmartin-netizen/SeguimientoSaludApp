@@ -8,14 +8,18 @@ const inputClass =
 
 const skipKey = () => `checkin-skip-${toDayKey(new Date())}`
 
+// Un check se completa con la casilla; una medición, con el valor numérico
+const isFilled = (indicator, v = {}) =>
+  indicator.trackingType === 'check' ? Boolean(v.done) : Boolean(v.value)
+
 const DailyCheckin = () => {
-  const [pending, setPending] = useState([])   // indicadores sin medición hoy
-  const [values, setValues] = useState({})     // { [id]: { value, secondaryValue } }
+  const [pending, setPending] = useState([])   // indicadores sin registro hoy
+  const [values, setValues] = useState({})     // { [id]: { done, value, secondaryValue } }
   const [open, setOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
 
-  // Al entrar, busca los indicadores que aún no tienen medición de hoy
+  // Al entrar, busca los indicadores que aún no tienen registro de hoy
   useEffect(() => {
     if (localStorage.getItem(skipKey())) return
 
@@ -55,23 +59,30 @@ const DailyCheckin = () => {
     setValues((prev) => ({ ...prev, [id]: { ...prev[id], [field]: value } }))
 
   const handleSave = async () => {
-    const entries = pending.filter((i) => values[i._id]?.value)
+    const entries = pending.filter((i) => isFilled(i, values[i._id]))
 
     if (!entries.length) {
-      setMessage('Escribe al menos una medición o pulsa "Omitir por hoy".')
+      setMessage('Marca un hábito o escribe al menos una medición, o pulsa "Omitir por hoy".')
       return
     }
 
     setSaving(true)
     setMessage('')
 
+    const measuredAt = new Date().toISOString()
+
     const results = await Promise.allSettled(
       entries.map((i) => {
         const v = values[i._id]
+
+        if (i.trackingType === 'check') {
+          return createHealthRecord(i._id, { measuredAt })
+        }
+
         return createHealthRecord(i._id, {
           value: Number(v.value),
           ...(v.secondaryValue && { secondaryValue: Number(v.secondaryValue) }),
-          measuredAt: new Date().toISOString()
+          measuredAt
         })
       })
     )
@@ -85,7 +96,9 @@ const DailyCheckin = () => {
 
     if (left.length) {
       setPending(left)
-      setMessage(`No se pudieron guardar: ${left.map((i) => i.name).join(', ')}. Inténtalo de nuevo.`)
+      setMessage(
+        `No se pudieron guardar: ${left.map((i) => i.name).join(', ')}. Inténtalo de nuevo.`
+      )
       return
     }
 
@@ -106,34 +119,49 @@ const DailyCheckin = () => {
         <p className="text-xs font-semibold tracking-widest text-[#789477]">REGISTRO DE HOY</p>
         <h2 className="mt-2 text-xl font-semibold text-[#344B3A]">¿Cómo estás hoy?</h2>
         <p className="mt-1 text-sm text-gray-400">
-          Completa tus mediciones de una vez. Los campos vacíos no se guardan.
+          Completa tus hábitos de una vez. Los que no marques o dejes vacíos no se guardan.
         </p>
 
         <div className="mt-6 space-y-4">
           {pending.map((indicator) => (
             <div key={indicator._id} className="rounded-xl border border-[#F0F0E9] p-4">
               <label className="mb-2 block text-sm font-medium text-[#344B3A]">
-                {indicator.name} <span className="text-gray-400">({indicator.unit})</span>
+                {indicator.name}{' '}
+                {indicator.trackingType !== 'check' && (
+                  <span className="text-gray-400">({indicator.unit})</span>
+                )}
               </label>
 
-              <div className="grid grid-cols-2 gap-2">
-                <input
-                  type="number"
-                  step="any"
-                  placeholder="Valor"
-                  value={values[indicator._id]?.value ?? ''}
-                  onChange={(e) => updateValue(indicator._id, 'value', e.target.value)}
-                  className={inputClass}
-                />
-                <input
-                  type="number"
-                  step="any"
-                  placeholder="Secundario (opcional)"
-                  value={values[indicator._id]?.secondaryValue ?? ''}
-                  onChange={(e) => updateValue(indicator._id, 'secondaryValue', e.target.value)}
-                  className={inputClass}
-                />
-              </div>
+              {indicator.trackingType === 'check' ? (
+                <label className="flex items-center gap-3 text-sm text-[#344B3A]">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(values[indicator._id]?.done)}
+                    onChange={(e) => updateValue(indicator._id, 'done', e.target.checked)}
+                    className="h-5 w-5 accent-[#344B3A]"
+                  />
+                  Lo hice hoy
+                </label>
+              ) : (
+                <div className="grid grid-cols-2 gap-2">
+                  <input
+                    type="number"
+                    step="any"
+                    placeholder="Valor"
+                    value={values[indicator._id]?.value ?? ''}
+                    onChange={(e) => updateValue(indicator._id, 'value', e.target.value)}
+                    className={inputClass}
+                  />
+                  <input
+                    type="number"
+                    step="any"
+                    placeholder="Secundario (opcional)"
+                    value={values[indicator._id]?.secondaryValue ?? ''}
+                    onChange={(e) => updateValue(indicator._id, 'secondaryValue', e.target.value)}
+                    className={inputClass}
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>
