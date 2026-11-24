@@ -9,6 +9,7 @@ import {
   Leaf,
   ChevronRight
 } from 'lucide-react'
+import logo from '../../assets/Logo.png'
 
 const Sidebar = () => {
   const menuItems = [
@@ -64,9 +65,11 @@ const Sidebar = () => {
 
       {/* LOGO */}
       <div className="flex h-20 items-center gap-3 border-b border-[#E9E9E0] px-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#344B3A] text-white">
-          <Leaf size={23} />
-        </div>
+        <img
+          src={logo}
+          alt="Logo de Cuidado Conciente"
+          className="h-10 w-10 rounded-xl object-contain"
+        />
 
         <div>
           <h1 className="text-xl font-semibold tracking-tight text-[#344B3A]">

@@ -380,7 +380,7 @@ const Registros = () => {
         {/* malestarS: formulario + lista */}
         <div className="space-y-6">
           <form onSubmit={handleSymptom} className={`${cardClass} space-y-3`}>
-            <h2 className="font-semibold text-[#344B3A]">Nuevo malestar</h2>
+            <h2 className="font-semibold text-[#344B3A]">Nuevo Malestar</h2>
             <input name="name" placeholder="Nombre (ej. Migraña)" required maxLength={60} className={inputClass} />
             <textarea name="description" placeholder="Descripción (opcional)" maxLength={250} rows={2} className={inputClass} />
             <button type="submit" className={buttonClass}>Crear malestar</button>
