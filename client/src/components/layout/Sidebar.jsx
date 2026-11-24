@@ -53,7 +53,7 @@ const Sidebar = () => {
           name: 'Informes',
           path: '/informes',
           icon: FileText,
-          enabled: false
+          enabled: true
         }
       ]
     }

@@ -8,6 +8,7 @@ import connectDB from './config/db.js'
 import authRoutes from './routes/authRoutes.js'
 import healthRoutes from './routes/healthRoutes.js'
 import symptomRoutes from './routes/symptomRoutes.js'
+import reportRoutes from './routes/reportRoutes.js'
 
 dotenv.config()
 
@@ -35,6 +36,8 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes)
 app.use('/api/health', healthRoutes)
 app.use('/api/symptoms', symptomRoutes)
+app.use('/api/reports', reportRoutes)
+
 
 // 404: ruta no encontrada (debe ir después de todas las rutas)
 app.use((req, res) => {

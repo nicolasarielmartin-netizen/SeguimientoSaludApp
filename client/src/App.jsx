@@ -14,6 +14,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Registros from './pages/Registros'
+import Informes from './pages/Informes'
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/registros" element={<Registros />} />
+              <Route path="/informes" element={<Informes />} />
+
             </Route>
           </Route>
 
