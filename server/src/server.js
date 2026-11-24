@@ -29,7 +29,7 @@ app.use(cookieParser())
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',
-    message: 'ChronicCare API funcionando'
+    message: 'Cuidado Conciente API funcionando'
   })
 })
 

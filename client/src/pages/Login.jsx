@@ -54,7 +54,7 @@ const Login = () => {
           </div>
 
           <h1 className="text-2xl font-bold text-slate-800">
-            ChronicCare
+            Cuidado Conciente
           </h1>
 
           <p className="text-slate-500 text-sm mt-2">

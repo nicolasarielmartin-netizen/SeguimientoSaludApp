@@ -24,14 +24,14 @@ const recordSchema = z.object({
 const invalidId = (res) =>
   res.status(400).json({ message: 'Identificador no válido' })
 
-// GET: Listar síntomas
+// GET: Listar malestares
 export const getSymptoms = async (req, res) => {
   try {
     const symptoms = await Symptom.find({ user: req.user._id }).sort({ createdAt: -1 })
     return res.json(symptoms)
   } catch (error) {
     console.error('getSymptoms:', error)
-    return res.status(500).json({ message: 'Error al obtener síntomas' })
+    return res.status(500).json({ message: 'Error al obtener malestares' })
   }
 }
 

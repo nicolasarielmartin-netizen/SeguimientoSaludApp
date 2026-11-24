@@ -98,7 +98,7 @@ const Registros = () => {
     run(async () => {
       await createIndicator(data)
       form.reset()
-    }, 'Indicador creado')
+    }, 'Habito creado')
   }
 
   const handleRecord = (e) => {
@@ -124,7 +124,7 @@ const Registros = () => {
     run(async () => {
       await createSymptom(data)
       form.reset()
-    }, 'Síntoma creado')
+    }, 'malestar creado')
   }
 
   const handleEpisode = (e) => {
@@ -164,7 +164,7 @@ const Registros = () => {
   const saveEdit = () => {
     const { type, id, values } = editing
     const fn = type === 'indicator' ? updateIndicator : updateSymptom
-    const okText = type === 'indicator' ? 'Indicador actualizado' : 'Síntoma actualizado'
+    const okText = type === 'indicator' ? 'Habito actualizado' : 'malestar actualizado'
     run(async () => {
       await fn(id, values)
       setEditing(null)
@@ -322,7 +322,7 @@ const Registros = () => {
       <header>
         <h1 className="text-2xl font-semibold text-[#344B3A]">Registros</h1>
         <p className="mt-1 text-sm text-gray-400">
-          Crea tus indicadores, síntomas y registra mediciones o episodios.
+          Crea tus Habitos, Malestares y registra mediciones o episodios.
         </p>
       </header>
 
@@ -335,21 +335,21 @@ const Registros = () => {
 
       <div className="grid gap-6 md:grid-cols-2">
 
-        {/* INDICADORES: formulario + lista */}
+        {/* Habitos: formulario + lista */}
         <div className="space-y-6">
           <form onSubmit={handleIndicator} className={`${cardClass} space-y-3`}>
-            <h2 className="font-semibold text-[#344B3A]">Nuevo indicador</h2>
+            <h2 className="font-semibold text-[#344B3A]">Nuevo Habito</h2>
             <input name="name" placeholder="Nombre (ej. Presión arterial)" required maxLength={60} className={inputClass} />
             <input name="category" placeholder="Categoría (opcional)" maxLength={40} className={inputClass} />
             <input name="unit" placeholder="Unidad (ej. mmHg)" required maxLength={20} className={inputClass} />
             <textarea name="description" placeholder="Descripción (opcional)" maxLength={250} rows={2} className={inputClass} />
-            <button type="submit" className={buttonClass}>Crear indicador</button>
+            <button type="submit" className={buttonClass}>Crear Habito</button>
           </form>
 
           <div className={cardClass}>
-            <h3 className="mb-3 text-sm font-semibold text-[#344B3A]">Tus indicadores</h3>
+            <h3 className="mb-3 text-sm font-semibold text-[#344B3A]">Tus Habitos</h3>
             {indicators.length === 0 ? (
-              <p className="text-xs text-gray-400">Aún no tienes indicadores.</p>
+              <p className="text-xs text-gray-400">Aún no tienes Habitos.</p>
             ) : (
               <ul className="space-y-2">
                 {indicators.map((i) => renderItem('indicator', i))}
@@ -358,12 +358,12 @@ const Registros = () => {
           </div>
         </div>
 
-        {/* MEDICIONES: formulario (la lista está en cada indicador) */}
+        {/* MEDICIONES: formulario (la lista está en cada Habito) */}
         <div className="space-y-6">
           <form onSubmit={handleRecord} className={`${cardClass} space-y-3`}>
             <h2 className="font-semibold text-[#344B3A]">Registrar medición</h2>
             <select name="indicatorId" required className={inputClass} defaultValue="">
-              <option value="" disabled>Elige un indicador</option>
+              <option value="" disabled>Elige un Habito</option>
               {indicators.map((i) => (
                 <option key={i._id} value={i._id}>{i.name} ({i.unit})</option>
               ))}
@@ -373,23 +373,23 @@ const Registros = () => {
             <input name="measuredAt" type="datetime-local" className={inputClass} />
             <textarea name="notes" placeholder="Notas (opcional)" maxLength={500} rows={2} className={inputClass} />
             <button type="submit" disabled={!indicators.length} className={buttonClass}>Guardar medición</button>
-            {!indicators.length && <p className="text-xs text-gray-400">Crea primero un indicador.</p>}
+            {!indicators.length && <p className="text-xs text-gray-400">Crea primero un Habito.</p>}
           </form>
         </div>
 
-        {/* SÍNTOMAS: formulario + lista */}
+        {/* malestarS: formulario + lista */}
         <div className="space-y-6">
           <form onSubmit={handleSymptom} className={`${cardClass} space-y-3`}>
-            <h2 className="font-semibold text-[#344B3A]">Nuevo síntoma</h2>
+            <h2 className="font-semibold text-[#344B3A]">Nuevo malestar</h2>
             <input name="name" placeholder="Nombre (ej. Migraña)" required maxLength={60} className={inputClass} />
             <textarea name="description" placeholder="Descripción (opcional)" maxLength={250} rows={2} className={inputClass} />
-            <button type="submit" className={buttonClass}>Crear síntoma</button>
+            <button type="submit" className={buttonClass}>Crear malestar</button>
           </form>
 
           <div className={cardClass}>
-            <h3 className="mb-3 text-sm font-semibold text-[#344B3A]">Tus síntomas</h3>
+            <h3 className="mb-3 text-sm font-semibold text-[#344B3A]">Tus malestares</h3>
             {symptoms.length === 0 ? (
-              <p className="text-xs text-gray-400">Aún no tienes síntomas.</p>
+              <p className="text-xs text-gray-400">Aún no tienes malestares.</p>
             ) : (
               <ul className="space-y-2">
                 {symptoms.map((s) => renderItem('symptom', s))}
@@ -398,12 +398,12 @@ const Registros = () => {
           </div>
         </div>
 
-        {/* EPISODIOS: formulario (la lista está en cada síntoma) */}
+        {/* EPISODIOS: formulario (la lista está en cada malestar) */}
         <div className="space-y-6">
           <form onSubmit={handleEpisode} className={`${cardClass} space-y-3`}>
             <h2 className="font-semibold text-[#344B3A]">Registrar episodio</h2>
             <select name="symptomId" required className={inputClass} defaultValue="">
-              <option value="" disabled>Elige un síntoma</option>
+              <option value="" disabled>Elige un malestar</option>
               {symptoms.map((s) => (
                 <option key={s._id} value={s._id}>{s.name}</option>
               ))}
@@ -413,7 +413,7 @@ const Registros = () => {
             <input name="recordedAt" type="datetime-local" className={inputClass} />
             <textarea name="notes" placeholder="Notas (opcional)" maxLength={500} rows={2} className={inputClass} />
             <button type="submit" disabled={!symptoms.length} className={buttonClass}>Guardar episodio</button>
-            {!symptoms.length && <p className="text-xs text-gray-400">Crea primero un síntoma.</p>}
+            {!symptoms.length && <p className="text-xs text-gray-400">Crea primero un malestar.</p>}
           </form>
         </div>
 

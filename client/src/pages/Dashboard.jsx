@@ -17,7 +17,7 @@ const Dashboard = () => {
         </h1>
 
         <p className="mt-2 text-sm text-gray-500">
-          Conocé tus hábitos y seguí la evolución de tus síntomas.
+          Conocé tus hábitos y seguí la evolución de tus malestares.
         </p>
       </div>
 
@@ -34,7 +34,7 @@ const Dashboard = () => {
         </p>
 
         <p className="mt-1 text-xs leading-relaxed text-[#6D806C]">
-          Registrar tus hábitos y síntomas te permite conocer mejor
+          Registrar tus hábitos y malestares te permite conocer mejor
           tu evolución y compartir información útil con tu profesional
           de salud.
         </p>

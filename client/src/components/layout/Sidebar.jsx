@@ -70,10 +70,10 @@ const Sidebar = () => {
 
         <div>
           <h1 className="text-xl font-semibold tracking-tight text-[#344B3A]">
-            ChronicCare
+            Cuidado Conciente
           </h1>
           <p className="text-xs text-gray-400">
-            Your health companion
+            Tu seguimiento personal
           </p>
         </div>
       </div>

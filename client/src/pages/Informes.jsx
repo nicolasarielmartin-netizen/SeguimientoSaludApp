@@ -46,7 +46,7 @@ const Informes = () => {
       <header>
         <h1 className="text-2xl font-semibold text-[#344B3A]">Informes</h1>
         <p className="mt-1 text-sm text-gray-400">
-          Descarga un PDF con tus indicadores y síntomas del periodo que elijas.
+          Descarga un PDF con tus indicadores y malestares del periodo que elijas.
         </p>
       </header>
 

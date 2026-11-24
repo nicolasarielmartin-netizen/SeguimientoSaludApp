@@ -113,13 +113,13 @@ export const downloadHealthReport = async (req, res) => {
       doc.moveDown(0.6)
     }
 
-    // Síntomas
+    // malestares
     doc.moveDown()
-    doc.fontSize(13).fillColor('#344B3A').text('Síntomas')
+    doc.fontSize(13).fillColor('#344B3A').text('malestares')
     doc.moveDown(0.5)
 
     if (!symptoms.length) {
-      doc.fontSize(10).fillColor('#666666').text('No hay síntomas registrados.')
+      doc.fontSize(10).fillColor('#666666').text('No hay malestares registrados.')
     }
 
     for (const symptom of symptoms) {

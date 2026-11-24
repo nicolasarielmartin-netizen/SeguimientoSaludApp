@@ -23,7 +23,7 @@ const SymptomsChart = () => {
   const days = useMemo(() => lastSevenDays(), [])
   const dayKeys = useMemo(() => new Set(days.map((d) => d.key)), [days])
 
-  // Cargar síntomas del usuario
+  // Cargar malestares del usuario
   useEffect(() => {
     let active = true
 
@@ -35,7 +35,7 @@ const SymptomsChart = () => {
         if (visible.length) setSelectedId(visible[0]._id)
       })
       .catch(() => {
-        if (active) setError('No se pudieron cargar tus síntomas')
+        if (active) setError('No se pudieron cargar tus malestares')
       })
       .finally(() => {
         if (active) setLoading(false)
@@ -71,7 +71,7 @@ const SymptomsChart = () => {
   const weekRecords = records.filter((r) => dayKeys.has(toDayKey(r.recordedAt)))
 
   // Un punto por día. Si no hay registro, intensidad queda en null para no
-  // dibujar un 0 que parezca ausencia de síntomas.
+  // dibujar un 0 que parezca ausencia de malestares.
   const data = days.map((day) => {
     const dayRecords = weekRecords.filter(
       (r) => toDayKey(r.recordedAt) === day.key
@@ -105,7 +105,7 @@ const SymptomsChart = () => {
           <p className="text-xs font-semibold tracking-widest text-[#A77D65]">
             SEGUIMIENTO
           </p>
-          <h2 className="mt-2 text-xl font-semibold text-[#344B3A]">Síntomas</h2>
+          <h2 className="mt-2 text-xl font-semibold text-[#344B3A]">Malestares</h2>
           <p className="mt-1 text-sm text-gray-400">
             Frecuencia e intensidad de los episodios
           </p>
@@ -123,7 +123,7 @@ const SymptomsChart = () => {
 
       {!loading && !error && symptoms.length === 0 && (
         <p className="mt-6 text-sm text-gray-400">
-          Aún no tienes síntomas registrados. Crea uno para empezar a seguirlo.
+          Aún no tienes malestares registrados. Crea uno para empezar a seguirlo.
         </p>
       )}
 
@@ -255,7 +255,7 @@ const SymptomsChart = () => {
           </div>
 
           <p className="mt-4 text-xs text-gray-400">
-            Los días sin registro aparecen vacíos. No significan ausencia de síntomas si no se realizó el registro.
+            Los días sin registro aparecen vacíos. No significan ausencia de malestares si no se realizó el registro.
           </p>
         </>
       )}
