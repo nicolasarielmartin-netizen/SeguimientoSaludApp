@@ -19,10 +19,11 @@ const loginSchema = z.object({
 })
 
 // Configuración de cookie
+const isProd = process.env.NODE_ENV === 'production'
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
+  secure: isProd,
+  sameSite: isProd ? 'none' : 'lax',
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: '/'
 }
@@ -172,3 +173,5 @@ export const createIndicator = async (req, res) => {
     res.status(500).json({ message: 'Error al crear el indicador' })
   }
 }
+
+

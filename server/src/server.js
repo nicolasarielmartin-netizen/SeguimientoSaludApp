@@ -17,10 +17,14 @@ const app = express()
 // Middlewares generales
 app.use(helmet())
 
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1)
+}
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
   credentials: true
 }))
+
 
 app.use(express.json())
 app.use(cookieParser())
