@@ -1,9 +1,12 @@
-
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { HeartPulse } from 'lucide-react'
+import { User, Mail, Lock } from 'lucide-react'
 
 import { useAuth } from '../context/AuthContext'
+import logo from '../assets/Logo.png'
+
+const inputClass =
+  'w-full rounded-xl border border-[#E9E9E0] bg-white py-3 pl-10 pr-4 text-sm text-[#344B3A] outline-none transition focus:border-transparent focus:ring-2 focus:ring-[#789477]'
 
 const Register = () => {
   const { register } = useAuth()
@@ -44,78 +47,101 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#F7F7F1] px-4">
 
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+      <div className="w-full max-w-md rounded-2xl border border-[#E9E9E0] bg-white p-8 shadow-sm">
 
-        <div className="flex flex-col items-center mb-8">
+        <div className="mb-8 flex flex-col items-center text-center">
+          <img
+            src={logo}
+            alt="Logo de Cuidado Conciente"
+            className="mb-4 h-16 w-16 object-contain"
+          />
 
-          <HeartPulse size={42} className="text-teal-600 mb-3" />
-
-          <h1 className="text-2xl font-bold text-slate-800">
+          <h1 className="text-2xl font-semibold tracking-tight text-[#344B3A]">
             Crear cuenta
           </h1>
 
-          <p className="text-slate-500 text-sm mt-2">
-            Comenzá a realizar tu seguimiento de salud
+          <p className="mt-2 text-sm text-gray-400">
+            Comienza a dar seguimiento a tu salud
           </p>
-
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
 
           <div>
-            <label className="block text-sm font-medium mb-2">
+            <label className="mb-2 block text-sm font-medium text-[#687568]">
               Nombre completo
             </label>
 
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              minLength={2}
-              className="w-full border border-slate-200 rounded-lg p-3 outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="María González"
-            />
+            <div className="relative">
+              <User
+                className="absolute left-3 top-3.5 text-[#789477]"
+                size={18}
+              />
+
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="María González"
+                required
+                minLength={2}
+                className={inputClass}
+              />
+            </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
+            <label className="mb-2 block text-sm font-medium text-[#687568]">
               Email
             </label>
 
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full border border-slate-200 rounded-lg p-3 outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="tu@email.com"
-            />
+            <div className="relative">
+              <Mail
+                className="absolute left-3 top-3.5 text-[#789477]"
+                size={18}
+              />
+
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="tu@email.com"
+                required
+                className={inputClass}
+              />
+            </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
+            <label className="mb-2 block text-sm font-medium text-[#687568]">
               Contraseña
             </label>
 
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              minLength={8}
-              className="w-full border border-slate-200 rounded-lg p-3 outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="Mínimo 8 caracteres"
-            />
+            <div className="relative">
+              <Lock
+                className="absolute left-3 top-3.5 text-[#789477]"
+                size={18}
+              />
+
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Mínimo 8 caracteres"
+                required
+                minLength={8}
+                className={inputClass}
+              />
+            </div>
           </div>
 
           {error && (
-            <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
+            <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
               {error}
             </div>
           )}
@@ -123,17 +149,20 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors"
+            className="w-full rounded-xl bg-[#344B3A] py-3 text-sm font-medium text-white transition hover:bg-[#42634C] disabled:opacity-50"
           >
             {loading ? 'Creando cuenta...' : 'Crear cuenta'}
           </button>
 
         </form>
 
-        <p className="text-center text-sm text-slate-500 mt-6">
-          ¿Ya tenés cuenta?{' '}
-          <Link to="/login" className="text-teal-600 font-semibold hover:underline">
-            Iniciá sesión
+        <p className="mt-6 text-center text-sm text-gray-500">
+          ¿Ya tienes cuenta?{' '}
+          <Link
+            to="/login"
+            className="font-semibold text-[#42634C] hover:underline"
+          >
+            Inicia sesión
           </Link>
         </p>
 

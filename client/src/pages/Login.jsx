@@ -1,9 +1,12 @@
-
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { HeartPulse, Mail, Lock } from 'lucide-react'
+import { Mail, Lock } from 'lucide-react'
 
 import { useAuth } from '../context/AuthContext'
+import logo from '../assets/Logo.png'
+
+const inputClass =
+  'w-full rounded-xl border border-[#E9E9E0] bg-white py-3 pl-10 pr-4 text-sm text-[#344B3A] outline-none transition focus:border-transparent focus:ring-2 focus:ring-[#789477]'
 
 const Login = () => {
   const { login } = useAuth()
@@ -43,35 +46,38 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#F7F7F1] px-4">
 
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+      <div className="w-full max-w-md rounded-2xl border border-[#E9E9E0] bg-white p-8 shadow-sm">
 
-        <div className="flex flex-col items-center mb-8">
+        <div className="mb-8 flex flex-col items-center text-center">
+          <img
+            src={logo}
+            alt="Logo de Cuidado Conciente"
+            className="mb-4 h-20 w-20 object-contain"
+          />
 
-          <div className="bg-teal-50 p-4 rounded-2xl mb-4">
-            <HeartPulse size={36} className="text-teal-600" />
-          </div>
-
-          <h1 className="text-2xl font-bold text-slate-800">
+          <h1 className="text-2xl font-semibold tracking-tight text-[#344B3A]">
             Cuidado Conciente
           </h1>
 
-          <p className="text-slate-500 text-sm mt-2">
+          <p className="mt-2 text-sm text-gray-400">
             Tu salud, bajo seguimiento
           </p>
-
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="mb-2 block text-sm font-medium text-[#687568]">
               Email
             </label>
 
             <div className="relative">
-              <Mail className="absolute left-3 top-3 text-slate-400" size={18} />
+              <Mail
+                className="absolute left-3 top-3.5 text-[#789477]"
+                size={18}
+              />
 
               <input
                 type="email"
@@ -80,33 +86,36 @@ const Login = () => {
                 onChange={handleChange}
                 placeholder="tu@email.com"
                 required
-                className="w-full border border-slate-200 rounded-lg py-2.5 pl-10 pr-4 outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                className={inputClass}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="mb-2 block text-sm font-medium text-[#687568]">
               Contraseña
             </label>
 
             <div className="relative">
-              <Lock className="absolute left-3 top-3 text-slate-400" size={18} />
+              <Lock
+                className="absolute left-3 top-3.5 text-[#789477]"
+                size={18}
+              />
 
               <input
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="********"
+                placeholder="••••••••"
                 required
-                className="w-full border border-slate-200 rounded-lg py-2.5 pl-10 pr-4 outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                className={inputClass}
               />
             </div>
           </div>
 
           {error && (
-            <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
+            <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
               {error}
             </div>
           )}
@@ -114,17 +123,20 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors"
+            className="w-full rounded-xl bg-[#344B3A] py-3 text-sm font-medium text-white transition hover:bg-[#42634C] disabled:opacity-50"
           >
             {loading ? 'Ingresando...' : 'Iniciar sesión'}
           </button>
 
         </form>
 
-        <p className="text-center text-sm text-slate-500 mt-6">
-          ¿No tenés cuenta?{' '}
-          <Link to="/register" className="text-teal-600 font-semibold hover:underline">
-            Registrate
+        <p className="mt-6 text-center text-sm text-gray-500">
+          ¿No tienes cuenta?{' '}
+          <Link
+            to="/register"
+            className="font-semibold text-[#42634C] hover:underline"
+          >
+            Regístrate
           </Link>
         </p>
 
