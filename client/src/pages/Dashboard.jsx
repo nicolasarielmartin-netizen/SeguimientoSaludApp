@@ -1,10 +1,13 @@
 
 import HabitsChart from '../components/dashboard/HabitsChart'
 import SymptomsChart from '../components/dashboard/SymptomsChart'
+import DailyCheckin from '../components/dashboard/DailyCheckin'
 
 const Dashboard = () => {
   return (
     <div className="mx-auto max-w-6xl space-y-7">
+
+      <DailyCheckin />
 
       {/* PAGE HEADER */}
       <div>
