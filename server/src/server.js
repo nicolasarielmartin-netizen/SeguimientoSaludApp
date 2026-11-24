@@ -20,8 +20,15 @@ app.use(helmet())
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1)
 }
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
+  .split(',')
+  .map((o) => o.trim())
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'https://cuidadoconcienteapp.vercel.app/',
+  origin: (origin, callback) => {
+    // Peticiones sin origen (Thunder Client, curl) o de un origen permitido
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true)
+    return callback(new Error('Origen no permitido'))
+  },
   credentials: true
 }))
 
