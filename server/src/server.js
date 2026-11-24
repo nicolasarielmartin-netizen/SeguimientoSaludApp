@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1)
 }
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://seguimientosaludapp.onrender.com',
+  origin: process.env.CLIENT_URL || 'https://cuidadoconcienteapp.vercel.app/',
   credentials: true
 }))
 
