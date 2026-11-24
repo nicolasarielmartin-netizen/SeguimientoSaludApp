@@ -4,12 +4,12 @@ import Symptom from '../models/Symptom.js'
 import SymptomRecord from '../models/SymptomRecord.js'
 
 const symptomSchema = z.object({
-  name: z.string().trim().min(1, 'El nombre del síntoma es obligatorio').max(60),
+  name: z.string().trim().min(1, 'El nombre del malestar es obligatorio').max(60),
   description: z.string().trim().max(250).optional()
 })
 
 const symptomUpdateSchema = z.object({
-  name: z.string().trim().min(1, 'El nombre del síntoma es obligatorio').max(60).optional(),
+  name: z.string().trim().min(1, 'El nombre del malestar es obligatorio').max(60).optional(),
   description: z.string().trim().max(250).optional(),
   isActive: z.boolean().optional()
 })
@@ -35,7 +35,7 @@ export const getSymptoms = async (req, res) => {
   }
 }
 
-// POST: Crear síntoma
+// POST: Crear malestar
 export const createSymptom = async (req, res) => {
   const parsed = symptomSchema.safeParse(req.body)
   if (!parsed.success) {
@@ -53,11 +53,11 @@ export const createSymptom = async (req, res) => {
     return res.status(201).json(symptom)
   } catch (error) {
     console.error('createSymptom:', error)
-    return res.status(400).json({ message: 'No se pudo crear el síntoma' })
+    return res.status(400).json({ message: 'No se pudo crear el malestar' })
   }
 }
 
-// PUT: Actualizar síntoma
+// PUT: Actualizar malestar
 export const updateSymptom = async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) return invalidId(res)
 
@@ -76,7 +76,7 @@ export const updateSymptom = async (req, res) => {
     })
 
     if (!symptom) {
-      return res.status(404).json({ message: 'Síntoma no encontrado' })
+      return res.status(404).json({ message: 'malestar no encontrado' })
     }
 
     const { name, description, isActive } = parsed.data
@@ -88,11 +88,11 @@ export const updateSymptom = async (req, res) => {
     return res.json(symptom)
   } catch (error) {
     console.error('updateSymptom:', error)
-    return res.status(400).json({ message: 'No se pudo actualizar el síntoma' })
+    return res.status(400).json({ message: 'No se pudo actualizar el malestar' })
   }
 }
 
-// DELETE: Eliminar síntoma y sus episodios
+// DELETE: Eliminar malestar y sus episodios
 export const deleteSymptom = async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) return invalidId(res)
 
@@ -103,7 +103,7 @@ export const deleteSymptom = async (req, res) => {
     })
 
     if (!symptom) {
-      return res.status(404).json({ message: 'Síntoma no encontrado' })
+      return res.status(404).json({ message: 'malestar no encontrado' })
     }
 
     await SymptomRecord.deleteMany({
@@ -112,14 +112,14 @@ export const deleteSymptom = async (req, res) => {
     })
     await symptom.deleteOne()
 
-    return res.json({ message: 'Síntoma y sus episodios eliminados correctamente' })
+    return res.json({ message: 'malestar y sus episodios eliminados correctamente' })
   } catch (error) {
     console.error('deleteSymptom:', error)
-    return res.status(500).json({ message: 'Error al eliminar el síntoma' })
+    return res.status(500).json({ message: 'Error al eliminar el malestar' })
   }
 }
 
-// GET: Episodios de un síntoma
+// GET: Episodios de un malestar
 export const getSymptomRecords = async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) return invalidId(res)
 
@@ -130,7 +130,7 @@ export const getSymptomRecords = async (req, res) => {
     })
 
     if (!symptom) {
-      return res.status(404).json({ message: 'Síntoma no encontrado' })
+      return res.status(404).json({ message: 'malestar no encontrado' })
     }
 
     const records = await SymptomRecord.find({
@@ -165,7 +165,7 @@ export const createSymptomRecord = async (req, res) => {
     })
 
     if (!symptom) {
-      return res.status(404).json({ message: 'Síntoma no encontrado o inactivo' })
+      return res.status(404).json({ message: 'malestar no encontrado o inactivo' })
     }
 
     const record = await SymptomRecord.create({

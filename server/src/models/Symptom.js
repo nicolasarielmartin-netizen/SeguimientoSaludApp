@@ -12,7 +12,7 @@ const symptomSchema = new mongoose.Schema(
 
     name: {
       type: String,
-      required: [true, 'El nombre del síntoma es obligatorio'],
+      required: [true, 'El nombre del malestar es obligatorio'],
       trim: true,
       maxlength: 60
     },

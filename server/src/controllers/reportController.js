@@ -267,7 +267,7 @@ export const downloadHealthReport = async (req, res) => {
       ]
     })
 
-    // Filas de síntomas
+    // Filas de malestares
     const symptomRows = symptoms.map((s) => {
       const eps = symptomRecords.filter((r) => String(r.symptom) === String(s._id))
       if (!eps.length) return [s.name, 0, 0, '-', '-']
@@ -332,15 +332,15 @@ export const downloadHealthReport = async (req, res) => {
       )
     }
 
-    sectionTitle(doc, 'Síntomas', COLORS.symptom)
+    sectionTitle(doc, 'malestares', COLORS.symptom)
     if (!symptoms.length) {
       doc.font('Helvetica').fontSize(10).fillColor(COLORS.muted)
-        .text('No hay síntomas registrados.', MARGIN, doc.y)
+        .text('No hay malestares registrados.', MARGIN, doc.y)
       doc.moveDown()
     } else {
       drawTable(
         doc,
-        ['Síntoma', 'Episodios', 'Días', 'Intensidad prom.', 'Máxima'],
+        ['malestar', 'Episodios', 'Días', 'Intensidad prom.', 'Máxima'],
         symptomRows,
         [175, 80, 70, 100, 70],
         COLORS.symptom

@@ -46,7 +46,7 @@ const SymptomsChart = () => {
     }
   }, [])
 
-  // Cargar episodios del síntoma seleccionado
+  // Cargar episodios del malestar seleccionado
   useEffect(() => {
     if (!selectedId) {
       setRecords([])
@@ -132,7 +132,7 @@ const SymptomsChart = () => {
           {/* SELECTOR */}
           <div className="mt-6">
             <p className="mb-3 text-xs font-medium text-gray-500">
-              Seleccionar síntoma
+              Seleccionar malestar
             </p>
             <div className="flex flex-wrap gap-2">
               {symptoms.map((symptom) => (

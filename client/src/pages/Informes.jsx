@@ -78,7 +78,7 @@ const Informes = () => {
         </div>
 
         <p className="text-xs text-gray-400">
-          El informe incluye, por cada indicador, el número de mediciones, promedio, mínimo, máximo y última medición. Por cada síntoma, los episodios, los días con episodios e intensidad.
+          El informe incluye, por cada indicador, el número de mediciones, promedio, mínimo, máximo y última medición. Por cada malestar, los episodios, los días con episodios e intensidad.
         </p>
 
         <button
