@@ -4,12 +4,19 @@ import HealthIndicator from '../models/HealthIndicator.js'
 import HealthRecord from '../models/HealthRecord.js'
 
 // Validación de indicadores
-const indicatorSchema = z.object({
-  name: z.string().trim().min(1, 'El nombre es obligatorio').max(60),
-  category: z.string().trim().max(40).optional(),
-  unit: z.string().trim().min(1, 'La unidad es obligatoria').max(20),
-  description: z.string().trim().max(250).optional()
-})
+const indicatorSchema = z
+  .object({
+    name: z.string().trim().min(1, 'El nombre es obligatorio').max(60),
+    trackingType: z.enum(['check', 'measure']).default('measure'),
+    category: z.string().trim().max(40).optional(),
+    unit: z.string().trim().max(20).optional(),
+    description: z.string().trim().max(250).optional()
+  })
+  .refine((d) => d.trackingType === 'check' || (d.unit && d.unit.length > 0), {
+    message: 'La unidad es obligatoria para hábitos de medición',
+    path: ['unit']
+  })
+
 
 // GET: Obtener indicadores del usuario
 export const getIndicators = async (req, res) => {
@@ -163,14 +170,6 @@ export const createHealthRecord = async (req, res) => {
   }
 
   try {
-    const { value, secondaryValue, measuredAt, notes } = req.body
-
-    if (value === undefined || value === null || value === '') {
-      return res.status(400).json({
-        message: 'El valor de la medición es obligatorio'
-      })
-    }
-
     const indicator = await HealthIndicator.findOne({
       _id: req.params.id,
       user: req.user._id,
@@ -183,18 +182,27 @@ export const createHealthRecord = async (req, res) => {
       })
     }
 
+    const isCheck = indicator.trackingType === 'check'
+    const { value, secondaryValue, measuredAt, notes } = req.body
+
+    if (!isCheck && (value === undefined || value === null || value === '')) {
+      return res.status(400).json({
+        message: 'El valor de la medición es obligatorio'
+      })
+    }
+
     const record = await HealthRecord.create({
       user: req.user._id,
       indicator: indicator._id,
-      value,
-      secondaryValue,
+      value: isCheck ? 1 : Number(value),
+      secondaryValue: isCheck ? undefined : secondaryValue,
       measuredAt,
       notes
     })
 
     res.status(201).json(record)
   } catch (error) {
-    console.error('createHealthRecord:', error)
+    console.error('createHealthRecord:', error.name)
     res.status(400).json({
       message: 'No se pudo registrar la medición'
     })

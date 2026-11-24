@@ -41,6 +41,8 @@ const SYMPTOM_FIELDS = {
   description: 'Descripción'
 }
 
+
+
 const formatDate = (value) =>
   value ? new Date(value).toLocaleString('es', { dateStyle: 'short', timeStyle: 'short' }) : ''
 
@@ -67,6 +69,8 @@ const Registros = () => {
       : await getSymptomRecords(id)
     setRecordsCache((prev) => ({ ...prev, [key]: list }))
   }
+
+const [newType, setNewType] = useState('measure')
 
   useEffect(() => {
     loadAll().catch(() => setError('No se pudieron cargar tus datos'))
@@ -98,6 +102,19 @@ const Registros = () => {
     run(async () => {
       await createIndicator(data)
       form.reset()
+          {item.trackingType === 'check' ? (
+      'Cumplido'
+    ) : type === 'indicator' ? (
+      <>
+        {r.value}
+        {r.secondaryValue != null && ` / ${r.secondaryValue}`} {item.unit}
+      </>
+    ) : (
+      <>
+        {r.frequency} episodio(s), intensidad {r.intensity}/10
+      </>
+    )}
+
     }, 'Habito creado')
   }
 
@@ -338,13 +355,24 @@ const Registros = () => {
         {/* Habitos: formulario + lista */}
         <div className="space-y-6">
           <form onSubmit={handleIndicator} className={`${cardClass} space-y-3`}>
-            <h2 className="font-semibold text-[#344B3A]">Nuevo Habito</h2>
-            <input name="name" placeholder="Nombre (ej. Presión arterial)" required maxLength={60} className={inputClass} />
-            <input name="category" placeholder="Categoría (opcional)" maxLength={40} className={inputClass} />
-            <input name="unit" placeholder="Unidad (ej. mmHg)" required maxLength={20} className={inputClass} />
-            <textarea name="description" placeholder="Descripción (opcional)" maxLength={250} rows={2} className={inputClass} />
-            <button type="submit" className={buttonClass}>Crear Habito</button>
-          </form>
+              <h2 className="font-semibold text-[#344B3A]">Nuevo indicador</h2>
+              <input name="name" placeholder="Nombre (ej. Lavarse los dientes, Correr)" required maxLength={60} className={inputClass} />
+              <select
+                name="trackingType"
+                value={newType}
+                onChange={(e) => setNewType(e.target.value)}
+                className={inputClass}
+              >
+                <option value="check">Check de cumplimiento (lo hice o no)</option>
+                <option value="measure">Unidad de medida (ej. minutos, km)</option>
+              </select>
+              {newType === 'measure' && (
+                <input name="unit" placeholder="Unidad (ej. min, km, mmHg)" required maxLength={20} className={inputClass} />
+              )}
+              <input name="category" placeholder="Categoría (opcional)" maxLength={40} className={inputClass} />
+              <textarea name="description" placeholder="Descripción (opcional)" maxLength={250} rows={2} className={inputClass} />
+              <button type="submit" className={buttonClass}>Crear indicador</button>
+            </form>
 
           <div className={cardClass}>
             <h3 className="mb-3 text-sm font-semibold text-[#344B3A]">Tus Habitos</h3>
