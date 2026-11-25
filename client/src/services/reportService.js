@@ -26,5 +26,6 @@ export const downloadHealthReport = async (from, to) => {
   document.body.appendChild(link)
   link.click()
   link.remove()
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
   URL.revokeObjectURL(url)
 }
